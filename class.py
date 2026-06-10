@@ -56,7 +56,7 @@ class BankAccount:
     def withdraw(self,amount):
         if amount<=0 :
             print("Withdrawal amount must be grater than 0")
-        if amount > balance:
+        if amount > self.balance:
             print("Insufficient balance. Current balance: Ksh. {self.balance}")
         self.balance-=amount
         print(f"Withdrawn: Ksh. {amount}. Current balance: Ksh.{self.balance}")
@@ -75,8 +75,8 @@ class BankAccount:
               ------------------------------------""")
     
     def close_account(self):
-        self.balance=0
-        print(f"Account {self.account_number} has been closed. Balace set to Ksh. 0.00")
+        del self.account_number
+        print(f"Account {self.account_number} has been closed.")
 
 account1= BankAccount("Logan", 11045687, 8000.00 )
 print(type(account1))
