@@ -4,6 +4,17 @@
 
 <div>
     <p>Home page</p>
+
+    <h1>{{ x }}</h1>
+
+    {% if name == 'Jack' %}
+        <h1>Name is correct</h1>
+    {% else %}
+        <h1>Name is incorrect </h1>
+    {% endif %}
+
+    
+
 </div>
 
 {% endblock %}
