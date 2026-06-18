@@ -1,5 +1,5 @@
 from flask import Flask, render_template,request,redirect,url_for,flash,session
-from database import get_products,get_sales,get_stock,insert_products,insert_stock,insert_sales,check_available_stock,check_user_exists,create_user
+from database import get_products,get_sales,get_stock,insert_products,insert_stock,insert_sales,check_available_stock,check_user_exists,create_user,sales_per_day,sales_per_product,profit_per_product,profit_per_day
 from flask_bcrypt import Bcrypt
 from functools import wraps
 
@@ -95,6 +95,30 @@ def add_stock():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    daily_sales=sales_per_day()
+    daily_profit=profit_per_day()
+
+    product_sales=sales_per_product()
+    product_profit=profit_per_product()
+
+    #product data
+    product_names = [ i[0] for i in product_sales ]
+    prod_profit = [ i[1] for i in product_profit  ]
+    prod_sales = [ i[1] for i in product_sales ]
+
+
+    #days data 
+    dates = [ i[0] for i in daily_sales ]
+    day_sales = [ i[1] for i in daily_sales ]
+    day_profit = [ i[1] for i in daily_profit ]
+
+    return render_template('dashboard.html',
+            product_names = product_names,prod_profit = prod_profit , prod_sales = prod_sales,
+            dates = dates , day_sales = day_sales, day_profit = day_profit 
+                           )
+
+
+
     return render_template("dashboard.html")
 
 @app.route('/register', methods=['GET','POST'])
@@ -137,5 +161,11 @@ def login():
                 flash("Incorrect password, try again",'danger')
 
     return render_template("login.html")
+
+@app.route('/logout')
+def logout():
+    session.pop('email',None)
+    flash("Logged out successfully",'success')
+    return redirect(url_for('login'))
 
 app.run()
