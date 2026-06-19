@@ -3,13 +3,67 @@
 {% block content %}
 
 <div>
-    <p>{{ product_names }}</p>
-    <p>{{ prod_profit }}</p>
-    <p>{{ prod_sales }}</p>
-    <p>{{ dates }}</p>
-    <p>{{ day_sales }}</p>
-    <p>{{ day_profit }}</p>
+    <canvas id="line-chart" width="800" height="450"></canvas>
 
 </div>
+<div>
+    <canvas id="bar-chart-grouped" width="800" height="450"></canvas>
+</div>
+
+<script>
+    new Chart(document.getElementById("line-chart"), {
+        type: 'line',
+        data: {
+
+            labels: {{dates | safe }},
+            datasets: [{
+                data: {{day_profit | safe }},
+                label: "Sales per product",
+                borderColor: "#3e95cd",
+                fill: false
+            }, {
+                data: {{ day_sales | safe }},
+                label: "Profit per product",
+                borderColor: "#8e5ea2",
+                fill: false
+            }, 
+                
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Sales and profit per product (in Ksh.)'
+            }
+        }
+    });
+
+
+
+
+    new Chart(document.getElementById("bar-chart-grouped"), {
+        type: 'bar',
+        data: {
+            labels: ["1900", "1950", "1999", "2050"],
+            datasets: [
+                {
+                    label: "Africa",
+                    backgroundColor: "#3e95cd",
+                    data: [133, 221, 783, 2478]
+                }, {
+                    label: "Europe",
+                    backgroundColor: "#8e5ea2",
+                    data: [408, 547, 675, 734]
+                }
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Population growth (millions)'
+            }
+        }
+    });
+</script>
 
 {% endblock %}
